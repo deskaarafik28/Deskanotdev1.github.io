@@ -121,7 +121,9 @@ nav a.active { color: var(--text); }
 
 .player-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 
-.player-video { display: flex; justify-content: center; align-items: center; height: 220px; margin-bottom: 18px; border-radius: 22px; border: 1px solid var(--border); background: linear-gradient(145deg,#181f31,#0d121c); font-size: 46px; }
+.player-video { position: relative; display: flex; justify-content: center; align-items: center; height: 220px; margin-bottom: 18px; border-radius: 22px; border: 1px solid var(--border); background: linear-gradient(145deg,#181f31,#0d121c); overflow: hidden; }
+
+#videoPlaceholder { font-size: 46px; }
 
 .resolution-item, .feature-item { padding: 12px 14px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); white-space: nowrap; font-size: 13px; color: #d5dbea; }
 
@@ -259,7 +261,12 @@ footer { padding: 0 18px 110px; text-align: center; color: var(--muted); font-si
     <div class="player-head">
       <h3 id="playerTitle">Now Playing</h3>
       <button class="close-player" onclick="closePlayer()">✕</button>
-    </div><div class="player-video">▶</div>
+    </div><div class="player-video">
+  <video id="videoPlayer" controls playsinline style="width:100%;height:100%;display:none;border-radius:22px;background:#000"></video>
+  <iframe id="videoFrame" width="100%" height="100%" style="border:none;border-radius:22px;display:none" allowfullscreen></iframe>
+  <div id="videoPlaceholder">▶</div>
+</div>
+</div>
 
 <div class="resolution-list">
   <div class="resolution-item">360p</div>
@@ -287,68 +294,33 @@ footer { padding: 0 18px 110px; text-align: center; color: var(--muted); font-si
   </div>
 </div>
   <script>
-    // Ganti API key di bawah pake punya lu sendiri
-    const TMDB_API = "506a8a2059a0c438d18ca0a815588543";async function loadTrendingAnime() {
-  try {
-    const res = await fetch("https://api.jikan.moe/v4/top/anime?limit=6");
-    const data = await res.json();
+const TMDB_API = "MASUKKAN_TMDB_API_KEY";const VIDEO_SOURCES = { "Solo Leveling": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "Shadow Rebirth": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "Blue Night": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "Love In Tokyo": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "Silent Promise": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscape.mp4", "When Life Gives You Tangerines": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4", "The First Frost": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" };
 
-    const row = document.querySelectorAll('.scroll-row')[0];
-    row.innerHTML = "";
+async function loadTrendingAnime() { const res = await fetch('https://api.jikan.moe/v4/top/anime?limit=8'); const data = await res.json(); const row = document.querySelectorAll('.scroll-row')[0]; row.innerHTML = '';
 
-    data.data.forEach(anime => {
-      row.innerHTML += `
-        <div class="card">
-          <div class="poster" style="background-image:url('${anime.images.jpg.large_image_url}')">
-            <span class="tag">Anime</span>
-          </div>
-          <div class="card-content">
-            <h4>${anime.title}</h4>
-            <div class="meta">⭐ ${anime.score || '-'} • ${anime.episodes || '?'} Episode</div>
-            <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-          </div>
-        </div>
-      `;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
+data.data.forEach(anime => { row.innerHTML +=  <div class="card"> <div class="poster" style="background-image:url('${anime.images.jpg.large_image_url}')"> <span class="tag">Anime</span> </div> <div class="card-content"> <h4>${anime.title}</h4> <div class="meta">⭐ ${anime.score || '-'} • ${anime.episodes || '?'} Episode</div> <button class="watch-btn" onclick="openPlayer('${anime.title.replace(/'/g, "\'")}')">Tonton</button> </div> </div>; }); }
 
-async function loadDracin() {
-  try {
-    const res = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API}&with_origin_country=CN&sort_by=popularity.desc`);
-    const data = await res.json();
+async function loadDracin() { if (TMDB_API === '506a8a2059a0c438d18ca0a815588543') return;
 
-    const row = document.querySelectorAll('.scroll-row')[1];
-    row.innerHTML = "";
+const res = await fetch(https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API}&with_origin_country=CN&sort_by=popularity.desc); const data = await res.json(); const row = document.querySelectorAll('.scroll-row')[1]; row.innerHTML = '';
 
-    data.results.slice(0,6).forEach(show => {
-      row.innerHTML += `
-        <div class="card">
-          <div class="poster" style="background-image:url('https://image.tmdb.org/t/p/w500${show.poster_path}')">
-            <span class="tag">Dracin</span>
-          </div>
-          <div class="card-content">
-            <h4>${show.name}</h4>
-            <div class="meta">⭐ ${show.vote_average} • ${show.first_air_date}</div>
-            <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-          </div>
-        </div>
-      `;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
+data.results.slice(0, 8).forEach(show => { row.innerHTML +=  <div class="card"> <div class="poster" style="background-image:url('https://image.tmdb.org/t/p/w500${show.poster_path}')"> <span class="tag">Dracin</span> </div> <div class="card-content"> <h4>${show.name}</h4> <div class="meta">⭐ ${show.vote_average} • ${show.first_air_date}</div> <button class="watch-btn" onclick="openPlayer('${show.name.replace(/'/g, "\'")}')">Tonton</button> </div> </div>; }); }
 
-function openPlayer(title){
+function openPlayer(title) { document.getElementById('playerTitle').innerText = title; document.getElementById('playerModal').style.display = 'flex';
 
-document.getElementById('playerTitle').innerText = title; document.getElementById('playerModal').style.display = 'flex'; }
+const player = document.getElementById('videoPlayer'); const frame = document.getElementById('videoFrame'); const placeholder = document.getElementById('videoPlaceholder');
 
-function closePlayer(){ document.getElementById('playerModal').style.display = 'none'; }
+player.pause(); player.src = ''; frame.src = '';
 
-document.querySelectorAll('.resolution-item').forEach(item=>{ item.onclick=()=>{ document.querySelectorAll('.resolution-item').forEach(x=>x.classList.remove('active')); item.classList.add('active'); } })
+player.style.display = 'none'; frame.style.display = 'none'; placeholder.style.display = 'flex';
+
+if (VIDEO_SOURCES[title]) { player.src = VIDEO_SOURCES[title]; player.style.display = 'block'; placeholder.style.display = 'none'; player.play(); } else { const query = encodeURIComponent(title + ' trailer'); frame.src = https://www.youtube.com/embed?listType=search&list=${query}; frame.style.display = 'block'; placeholder.style.display = 'none'; } }
+
+function closePlayer() { document.getElementById('playerModal').style.display = 'none'; document.getElementById('videoPlayer').pause(); document.getElementById('videoPlayer').src = ''; document.getElementById('videoFrame').src = ''; }
+
+document.querySelectorAll('.resolution-item').forEach(item => { item.onclick = () => { document.querySelectorAll('.resolution-item').forEach(x => x.classList.remove('active')); item.classList.add('active'); }; });
+
+window.addEventListener('click', e => { if (e.target.id === 'playerModal') closePlayer(); });
 
 loadTrendingAnime(); loadDracin(); </script>
 
