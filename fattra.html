@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI PATTRA GPT DARK</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070e;--s1:#0d0d1a;--s2:#111120;--bd:#1a1a2e;
+  --ac:#ff003c;--ah:#ff2a5f;--tx:#c8c8e0;--mx:#606078;
+  --ok:#00d49c;--er:#ff3366;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sans-serif;display:flex;flex-direction:column;overflow:hidden;font-size:15px}
+
+/* Header */
+.hdr{display:flex;align-items:center;gap:.7rem;padding:.75rem 1.2rem;border-bottom:1px solid var(--bd);background:var(--s1);flex-shrink:0}
+.htitle{font-size:.95rem;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:.45rem;color:var(--ac);text-shadow:0 0 10px rgba(255,0,60,0.4);text-transform:uppercase}
+.htitle svg{flex-shrink:0}
+select{appearance:none;-webkit-appearance:none;background:var(--s2);border:1px solid var(--bd);border-radius:20px;color:var(--tx);font-size:.7rem;padding:.2rem 1.4rem .2rem .6rem;cursor:pointer;outline:none;font-family:inherit;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23606078' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .4rem center}
+select:focus{border-color:rgba(255,0,60,.5)}
+.hright{margin-left:auto;display:flex;gap:.45rem;align-items:center}
+.ibtn{width:30px;height:30px;border-radius:6px;background:transparent;border:1px solid var(--bd);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mx);transition:color .15s,border-color .15s,background .15s;padding:0}
+.ibtn:hover{color:var(--tx);border-color:rgba(255,0,60,.4);background:rgba(255,0,60,.06)}
+
+/* System Prompt Panel */
+.sys{border-bottom:1px solid var(--bd);background:var(--s1);flex-shrink:0;overflow:hidden;max-height:36px;transition:max-height .22s ease}
+.sys.open{max-height:200px}
+.shdr{display:flex;align-items:center;gap:.5rem;padding:.55rem 1.2rem;cursor:pointer;user-select:none;font-size:.72rem;color:var(--mx);transition:color .15s}
+.shdr:hover{color:var(--tx)}
+.shdr .lbl{flex:1}
+.shdr .chev{opacity:.5;transition:transform .22s}
+.sys.open .chev{transform:rotate(180deg)}
+.sbody{padding:0 1.2rem .8rem}
+.sbody textarea{width:100%;height:80px;resize:none;background:var(--s2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-size:.78rem;line-height:1.55;padding:.6rem .8rem;font-family:inherit;outline:none;transition:border-color .2s}
+.sbody textarea:focus{border-color:rgba(255,0,60,.5)}
+.sbody textarea::placeholder{color:rgba(255,255,255,.1)}
+
+/* Chat Area */
+.msgs{flex:1;overflow-y:auto;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+
+.row{display:flex;gap:.55rem;align-items:flex-start;animation:mi .18s ease}
+.row.u{flex-direction:row-reverse;margin-left:auto;max-width:82%}
+.row.b{max-width:90%}
+@keyframes mi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.av{width:27px;height:27px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.av.b{background:rgba(255,0,60,.12);color:var(--ac);border:1px solid rgba(255,0,60,.18)}
+.av.u{background:var(--ac);color:#fff}
+
+.bbl{padding:.65rem .9rem;border-radius:12px;font-size:.875rem;line-height:1.65;position:relative;word-break:break-word}
+.bbl.b{background:var(--s1);border:1px solid var(--bd);border-top-left-radius:3px}
+.bbl.u{background:var(--ac);color:#fff;border-top-right-radius:3px}
+.bbl.er{background:rgba(255,51,102,.07);border-color:rgba(255,51,102,.2);color:var(--er)}
+.bbl pre{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.55rem .75rem;overflow-x:auto;margin:.5rem 0;font-size:.8rem;line-height:1.5}
+.bbl code{font-family:'Courier New',monospace;font-size:.8rem;background:rgba(255,255,255,.07);padding:.1em .3em;border-radius:3px}
+.bbl pre code{background:transparent;padding:0}
+.bbl.u code{background:rgba(255,255,255,.18)}
+.bbl.u pre{background:rgba(0,0,0,.2);border-color:rgba(255,255,255,.1)}
+.cpbtn{position:absolute;top:.45rem;right:.45rem;width:22px;height:22px;border-radius:5px;background:var(--s2);border:1px solid var(--bd);cursor:pointer;display:none;align-items:center;justify-content:center;color:var(--mx);padding:0;transition:color .15s}
+.bbl.b:hover .cpbtn{display:flex}
+.cpbtn:hover{color:var(--tx)}
+
+/* Thinking Block */
+.think{background:var(--s1);border:1px solid var(--bd);border-radius:12px;border-top-left-radius:3px;padding:.7rem .95rem;min-width:200px}
+.think-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.think-label{font-size:.7rem;color:var(--ac);font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:.35rem}
+.think-label svg{animation:spin 1.4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.think-elapsed{font-size:.7rem;color:var(--mx);font-variant-numeric:tabular-nums}
+.think-hint{font-size:.75rem;color:var(--mx);margin-bottom:.6rem;min-height:1.1em;transition:opacity .25s}
+.think-hint.fade{opacity:0}
+.dots{display:flex;gap:4px;align-items:center}
+.dots span{width:5px;height:5px;border-radius:50%;background:var(--ac);opacity:.4;animation:td .75s infinite}
+.dots span:nth-child(2){animation-delay:.15s}
+.dots span:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+
+/* Input Area */
+.inprow{padding:.75rem 1.2rem;border-top:1px solid var(--bd);background:var(--s1);flex-shrink:0;display:flex;gap:.55rem;align-items:flex-end}
+#inp{flex:1;resize:none;max-height:160px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-size:.875rem;line-height:1.6;padding:.6rem .85rem;font-family:inherit;outline:none;transition:border-color .2s}
+#inp:focus{border-color:rgba(255,0,60,.5)}
+#inp::placeholder{color:rgba(255,255,255,.1)}
+.sndbtn{width:36px;height:36px;border-radius:9px;background:var(--ac);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;padding:0;transition:background .15s,transform .1s,opacity .2s}
+.sndbtn:hover:not(:disabled){background:var(--ah)}
+.sndbtn:active:not(:disabled){transform:scale(.92)}
+.sndbtn:disabled{opacity:.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <symbol id="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+    <line x1="12" y1="2" x2="12" y2="22"/><path d="M2 8.5L12 12l10-3.5"/>
+  </symbol>
+  <symbol id="iu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </symbol>
+  <symbol id="itr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+  </symbol>
+  <symbol id="isn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+  </symbol>
+  <symbol id="icp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2"/>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </symbol>
+  <symbol id="ich" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </symbol>
+  <symbol id="isy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </symbol>
+  <symbol id="ifl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+  </symbol>
+</defs>
+</svg>
+
+<div class="hdr">
+  <div class="htitle">
+    <svg width="17" height="17"><use href="#ig"/></svg>
+    AI PATTRA GPT DARK
+  </div>
+  <select id="mdl">
+    <option value="pro">Gemini Pro</option>
+    <option value="flash">Gemini Flash</option>
+  </select>
+  <div class="hright">
+    <button class="ibtn" id="clr" title="Clear Chat">
+      <svg width="13" height="13"><use href="#itr"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="sys open" id="sys">
+  <div class="shdr" id="shdr">
+    <svg width="12" height="12"><use href="#isy"/></svg>
+    <span class="lbl">System Instruction</span>
+    <svg class="chev" width="12" height="12"><use href="#ich"/></svg>
+  </div>
+  <div class="sbody">
+    <textarea id="sysp" placeholder="Instruksi sistem..." spellcheck="false">Kamu adalah pattra ai yang canggih dan membantu user setiap command harus disertain [fattra ai] harus bahasa gaul bro kagak dan lain2 bahasa ogan.</textarea>
+  </div>
+</div>
+
+<div class="msgs" id="msgs">
+  <div class="row b">
+    <div class="av b"><svg width="13" height="13"><use href="#ig"/></svg></div>
+    <div class="bbl b">
+      Oi ada apa anj, gua dibikin oleh Tim PATTRA. Sistem gelap aktif. Analisis pesan lo udah di-load 100%. Jangan pake gaya alay, langsung sodorin perintah lo. Mau nyari data, web, atau bikin apa? Keluarin.
+    </div>
+  </div>
+</div>
+
+<div class="inprow">
+  <textarea id="inp" placeholder="Ketik perintah..." rows="1" spellcheck="false"></textarea>
+  <button class="sndbtn" id="snd" disabled>
+    <svg width="14" height="14"><use href="#isn"/></svg>
+  </button>
+</div>
+
+<script>
+const HINTS = [
+  'Menganalisis pesan...',
+  'Menyusun payload...',
+  'Memproses data...',
+  'Menulis respons...',
+]
+
+let hist = []
+let busy = false
+let timers = []
+
+function clearTimers() { timers.forEach(clearInterval); timers = [] }
+
+document.getElementById('shdr').addEventListener('click', () =>
+  document.getElementById('sys').classList.toggle('open'))
+
+document.getElementById('clr').addEventListener('click', () => {
+  hist = []
+  document.getElementById('msgs').innerHTML = ''
+  addBot('Chat dibersihin. Sistem siap.')
+})
+
+const inp = document.getElementById('inp')
+inp.addEventListener('input', () => {
+  inp.style.height = 'auto'
+  inp.style.height = Math.min(inp.scrollHeight, 160) + 'px'
+  document.getElementById('snd').disabled = !inp.value.trim() || busy
+})
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+    if (!document.getElementById('snd').disabled) go()
+  }
+})
+document.getElementById('snd').addEventListener('click', go)
+
+function md(raw) {
+  let t = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  t = t.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,l,c)=>`<pre><code>${c.trimEnd()}</code></pre>`)
+  t = t.replace(/`([^`\n]+)`/g,'<code>$1</code>')
+  t = t.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>')
+  t = t.replace(/(?<!\*)\*(?!\*)([^*\n]+)\*(?!\*)/g,'<em>$1</em>')
+  t = t.replace(/^### (.+)$/gm,'<h3>$1</h3>')
+  t = t.replace(/^## (.+)$/gm,'<h2>$1</h2>')
+  t = t.replace(/^# (.+)$/gm,'<h1>$1</h1>')
+  t = t.replace(/^[-*] (.+)$/gm,'<li>$1</li>')
+  t = t.replace(/(<li>[\s\S]*?<\/li>)/g,s=>`<ul>${s}</ul>`)
+  t = t.replace(/\n(?![<])/g,'<br>')
+  return t
+}
+
+function esc(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')
+}
+
+function scrollBot(){const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight}
+
+function addUser(text){
+  const m=document.getElementById('msgs'),r=document.createElement('div')
+  r.className='row u'
+  r.innerHTML=`<div class="bbl u">${esc(text)}</div><div class="av u"><svg width="13" height="13"><use href="#iu"/></svg></div>`
+  m.appendChild(r);scrollBot()
+}
+
+function addBot(text,err=false){
+  const m=document.getElementById('msgs'),r=document.createElement('div')
+  r.className='row b'
+  r.innerHTML=`
+    <div class="av b"><svg width="13" height="13"><use href="#ig"/></svg></div>
+    <div class="bbl b${err?' er':''}">
+      ${md(text)}
+      <button class="cpbtn"><svg width="10" height="10"><use href="#icp"/></svg></button>
+    </div>`
+  r.querySelector('.cpbtn').addEventListener('click',()=>navigator.clipboard.writeText(text).catch(()=>{}))
+  m.appendChild(r);scrollBot()
+}
+
+function addThink(){
+  clearTimers()
+  const m=document.getElementById('msgs'),r=document.createElement('div')
+  r.className='row b';r.id='tr'
+  r.innerHTML=`
+    <div class="av b"><svg width="13" height="13"><use href="#ig"/></svg></div>
+    <div class="think">
+      <div class="think-top">
+        <div class="think-label">
+          <svg width="11" height="11"><use href="#ifl"/></svg>
+          Berpikir
+        </div>
+        <span class="think-elapsed"><span id="tsec">0</span>s</span>
+      </div>
+      <div class="think-hint" id="thint">Mengirim ke API...</div>
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>`
+  m.appendChild(r);scrollBot()
+
+  let sec=0
+  timers.push(setInterval(()=>{
+    sec++
+    const el=document.getElementById('tsec')
+    if(el) el.textContent=sec
+  },1000))
+
+  let hi=0
+  timers.push(setInterval(()=>{
+    const el=document.getElementById('thint')
+    if(!el){clearTimers();return}
+    el.classList.add('fade')
+    setTimeout(()=>{
+      const e2=document.getElementById('thint')
+      if(!e2)return
+      e2.textContent=HINTS[hi%HINTS.length]
+      e2.classList.remove('fade')
+      hi++
+    },260)
+  },2200))
+}
+
+function rmThink(){
+  clearTimers()
+  const el=document.getElementById('tr')
+  if(el) el.remove()
+}
+
+async function go(){
+  const text = inp.value.trim()
+  if(!text || busy) return
+
+  inp.value='';inp.style.height='auto'
+  addUser(text)
+  hist.push({ role: 'User', content: text })
+  
+  // Batasi history biar ga kena limit URL (simpan 4 chat terakhir)
+  if(hist.length > 4) hist = hist.slice(hist.length - 4)
+
+  busy=true
+  document.getElementById('snd').disabled=true
+  addThink()
+
+  const model = document.getElementById('mdl').value
+  const sysPrompt = document.getElementById('sysp').value.trim()
+
+  // Bikin format history masuk ke message
+  const historyStr = hist.map(h => `${h.role}: ${h.content}`).join('\n');
+  const finalMessage = `${historyStr}\nPATTRA:`;
+
+  const url = `https://api-cloud.my.id/ai/gemini?message=${encodeURIComponent(finalMessage)}&instruction=${encodeURIComponent(sysPrompt)}&model=${model}`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.status) {
+      throw new Error("API menolak request atau limit.");
+    }
+
+    const reply = data.result;
+    rmThink();
+    addBot(reply);
+    
+    // Masukin balasan AI ke history
+    hist.push({ role: 'PATTRA', content: reply });
+
+  } catch(e) {
+    rmThink();
+    addBot(`[SYSTEM ERROR] ${e.message || "Gagal konek ke API."}`, true);
+  } finally {
+    busy = false;
+    document.getElementById('snd').disabled = !inp.value.trim();
+    inp.focus();
+  }
+}
+</script>
+</body>
+</html>
